@@ -3,7 +3,7 @@ import pytest
 from ddd import answer
 
 
-@pytest.fixture()
+@pytest.fixture
 def yolo():
     return "you only live once"
 
