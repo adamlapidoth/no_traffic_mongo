@@ -1,4 +1,5 @@
 import pytest
+from pymongo import MongoClient
 
 from schema import Item, Shipment, User
 
@@ -23,3 +24,14 @@ def shipment(user_1, mouse, laptop):
     mouse.quantity = 3
     laptop.quantity = 2
     return Shipment(user_1, items=[mouse, laptop])
+
+
+@pytest.fixture(scope="session")
+def mongo_client():
+    return MongoClient(host="localhost", port=27017)
+
+
+@pytest.fixture(scope="session")
+def db(mongo_client):
+    db = mongo_client.my_tello
+    return db

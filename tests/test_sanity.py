@@ -10,3 +10,7 @@ def test_laptop(laptop):
 
 def test_shipment(shipment):
     assert shipment.total_price == 2550
+
+
+def test_db(db, mongo_client):
+    assert db.name in mongo_client.list_database_names()
