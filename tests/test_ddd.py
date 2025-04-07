@@ -7,3 +7,7 @@ def test_answer():
 
 def test_t():
     assert 1 + 1 == 3
+
+
+def test_c():
+    assert True in (False)
