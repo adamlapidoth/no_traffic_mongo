@@ -6,3 +6,7 @@ def test_mouse(mouse):
 def test_laptop(laptop):
     assert laptop.name == "laptop"
     assert laptop.price == 1200
+
+
+def test_shipment(shipment):
+    assert shipment.total_price == 2550
