@@ -3,7 +3,7 @@ from typing import List
 
 class Item:
     def __init__(self, product_id: str, name: str, price: int, quantity: int):
-        self.product_it = product_id
+        self.product_id = product_id
         self.name = name
         self.price = price
         self.quantity = quantity
