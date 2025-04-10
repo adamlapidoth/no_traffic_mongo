@@ -1,7 +1,7 @@
 import copy
 from datetime import datetime, timezone
 
-from schema import User
+from schema import User, Item, Order
 
 
 class MCollection:
@@ -28,29 +28,59 @@ class MCollection:
         return ret
 
 
-class MUser:
-    def __init__(self, db, collection_name: str, user: User):
+class MObj:
+    def __init__(self, db, collection_name: str, obj):
         self.mongo_collection = MCollection(db, collection_name)
-        self.user_obj = user
+        self.obj = obj
 
     def add(self):
-        return self.mongo_collection.create(self.user_obj)
+        return self.mongo_collection.create(self.obj)
 
     def edit(self, field, new_val):
-        ret = self.mongo_collection.update(self.user_obj, field, new_val)
-        setattr(self.user_obj, field, new_val)
+        ret = self.mongo_collection.update(self.obj, field, new_val)
+        setattr(self.obj, field, new_val)
         return ret
 
     def get(self):
-        return self.mongo_collection.read(self.user_obj)
+        return self.mongo_collection.read(self.obj)
 
     def delete(self):
-        return self.mongo_collection.delete(self.user_obj)
+        return self.mongo_collection.delete(self.obj)
 
 
-class MItem(MCollection):
-    pass
+class MUser(MObj):
+    def __init__(self, db, user: User):
+        super().__init__(db, "users", user)
+
+    def from_mongo_to_obj(self) -> User:
+        user_dict = self.get()
+        user_dict.pop("create_date_utc")
+        user_dict.pop("_id")
+        user_dict.pop("update_date_utc", None)
+        return User(**user_dict)
 
 
-class MOrder(MCollection):
-    pass
+class MItem(MObj):
+    def __init__(self, db, item: Item):
+        super().__init__(db, "items", item)
+        self.cls = type(item)
+
+    def from_mongo_to_obj(self) -> Item:
+        item_dict = self.get()
+        item_dict.pop("create_date_utc")
+        item_dict.pop("_id")
+        item_dict.pop("update_date_utc", None)
+        return Item(**item_dict)
+
+
+class MOrder(MObj):
+    def __init__(self, db, order: Order):
+        super().__init__(db, "orders", order)
+        self.cls = Order
+
+    def from_mongo_to_obj(self) -> Order:
+        order_dict = self.get()
+        order_dict.pop("create_date_utc")
+        order_dict.pop("_id")
+        order_dict.pop("update_date_utc", None)
+        return Order(**order_dict)
