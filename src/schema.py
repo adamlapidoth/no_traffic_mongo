@@ -15,7 +15,7 @@ class User:
         self.user_id = user_id
 
 
-class Shipment:
+class Order:
     def __init__(self, user: User, items: List[Item] = None):
         if items is None:
             items = []
