@@ -1,3 +1,6 @@
+import copy
+from datetime import datetime, timezone
+
 from schema import User
 
 
@@ -6,7 +9,8 @@ class MCollection:
         self.col = getattr(db, collection_name)
 
     def create(self, my_obj):
-        item_dict = vars(my_obj)
+        item_dict = copy.deepcopy(vars(my_obj))
+        item_dict["create_date_utc"] = datetime.now(timezone.utc)
         ret = self.col.insert_one(item_dict)
         return ret
 
@@ -19,7 +23,8 @@ class MCollection:
         return ret
 
     def update(self, my_obj, field, new_val):
-        ret = self.col.update_one({"name": my_obj.name}, {"$set": {field: new_val}})
+        update_dict = {"update_date_utc": datetime.now(timezone.utc), field: new_val}
+        ret = self.col.update_one({"name": my_obj.name}, {"$set": update_dict})
         return ret
 
 

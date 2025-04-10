@@ -24,7 +24,9 @@ class TestMongoUser:
         mongo_user = MUser(db, "users", user_1)
         mongo_user.add()
         user_dict = mongo_user.get()
-        assert vars(user_1) == user_dict
+        user_dict.pop("_id")
+        user_dict.pop("create_date_utc")
+        assert user_dict == vars(user_1)
         mongo_user.delete()
 
     def test_delete(self, db, user_1):
