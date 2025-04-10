@@ -1,6 +1,9 @@
+import copy
+
+
 def create_item(db, item):
     items_col = db.items
-    item_dict = vars(item)
+    item_dict = copy.deepcopy(vars(item))
     ret = items_col.insert_one(item_dict)
     return ret
 
