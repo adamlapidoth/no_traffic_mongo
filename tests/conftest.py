@@ -1,7 +1,7 @@
 import pytest
 from pymongo import MongoClient
 
-from schema import Item, Shipment, User
+from schema import Item, Order, User
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def user_1():
 def shipment(user_1, mouse, laptop):
     mouse.quantity = 3
     laptop.quantity = 2
-    return Shipment(user_1, items=[mouse, laptop])
+    return Order(user_1, items=[mouse, laptop])
 
 
 @pytest.fixture(scope="session")
