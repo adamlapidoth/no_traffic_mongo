@@ -1,4 +1,5 @@
 from mongo_classes import MUser
+from schema import User
 
 
 class TestMongoUser:
@@ -33,3 +34,7 @@ class TestMongoUser:
         ret = mongo_user.delete()
         assert ret.acknowledged
         assert not mongo_user.get()
+
+    def test_remove_all_users(self, db, clear_users):
+        mongo_user = MUser(db, User(name="Ilan", user_id="hhh"))
+        mongo_user.add()

@@ -35,3 +35,24 @@ def mongo_client():
 def db(mongo_client):
     db = mongo_client.my_tello
     return db
+
+
+@pytest.fixture
+def clear_users(db):
+    yield
+    users_col = db["users"]
+    users_col.delete_many({})
+
+
+@pytest.fixture
+def clear_items(db):
+    yield
+    users_col = db["items"]
+    users_col.delete_many({})
+
+
+@pytest.fixture
+def clear_orders(db):
+    yield
+    users_col = db["items"]
+    users_col.delete_many({})
