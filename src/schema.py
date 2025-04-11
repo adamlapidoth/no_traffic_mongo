@@ -35,13 +35,23 @@ class User:
 
 
 class Order:
-    def __init__(self, user: User, items: List[Item] = None):
+    def __init__(
+        self,
+        user: User,
+        items: List[Item] = None,
+        status: str = "Pending",
+        total_price: float = None,
+    ):
+        self.user = user
         if items is None:
             items = []
         self.items = items
-        self.user = user
-        self.status = "Pending"
-        self.total_price = sum(it.price * it.quantity for it in items)
+        self.status = status
+        self.total_price = (
+            sum(it.price * it.quantity for it in items)
+            if total_price is None
+            else total_price
+        )
 
     def __eq__(self, other):
         if not isinstance(other, Order):
@@ -49,7 +59,7 @@ class Order:
             return NotImplemented
 
         return (
-            self.user_id == other.user_id
+            self.user == other.user
             and self.items == other.items
             and self.status == other.status
             and self.total_price == other.total_price

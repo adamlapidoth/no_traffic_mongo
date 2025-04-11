@@ -82,3 +82,14 @@ class MOrder(MObj):
     def get(self):
         ret = self.mongo_collection.col.find_one({"user.name": self.obj.user.name})
         return ret
+
+    def from_mongo_to_obj(self):
+        obj_dict = self.get()
+        obj_dict.pop("create_date_utc")
+        obj_dict.pop("_id")
+        obj_dict.pop("update_date_utc", None)
+        user_dict = obj_dict.pop("user")
+        obj_dict["user"] = User(**user_dict)
+        items_list = obj_dict.pop("items")
+        obj_dict["items"] = [Item(**it) for it in items_list]
+        return type(self.obj)(**obj_dict)
