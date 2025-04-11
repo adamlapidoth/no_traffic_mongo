@@ -47,36 +47,27 @@ class MObj:
     def delete(self):
         return self.mongo_collection.delete(self.obj)
 
+    def from_mongo_to_obj(self):
+        obj_dict = self.get()
+        obj_dict.pop("create_date_utc")
+        obj_dict.pop("_id")
+        obj_dict.pop("update_date_utc", None)
+        return type(self.obj)(**obj_dict)
+
 
 class MUser(MObj):
     def __init__(self, db, user: User):
         super().__init__(db, "users", user)
 
-    def from_mongo_to_obj(self) -> User:
-        user_dict = self.get()
-        user_dict.pop("create_date_utc")
-        user_dict.pop("_id")
-        user_dict.pop("update_date_utc", None)
-        return User(**user_dict)
-
 
 class MItem(MObj):
     def __init__(self, db, item: Item):
         super().__init__(db, "items", item)
-        self.cls = type(item)
-
-    def from_mongo_to_obj(self) -> Item:
-        item_dict = self.get()
-        item_dict.pop("create_date_utc")
-        item_dict.pop("_id")
-        item_dict.pop("update_date_utc", None)
-        return Item(**item_dict)
 
 
 class MOrder(MObj):
     def __init__(self, db, order: Order):
         super().__init__(db, "orders", order)
-        self.cls = Order
 
     def from_mongo_to_obj(self) -> Order:
         order_dict = self.get()
