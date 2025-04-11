@@ -20,7 +20,7 @@ def user_1():
 
 
 @pytest.fixture
-def shipment(user_1, mouse, laptop):
+def order(user_1, mouse, laptop):
     mouse.quantity = 3
     laptop.quantity = 2
     return Order(user_1, items=[mouse, laptop])

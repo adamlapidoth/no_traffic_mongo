@@ -8,8 +8,8 @@ def test_laptop(laptop):
     assert laptop.price == 1200
 
 
-def test_shipment(shipment):
-    assert shipment.total_price == 2550
+def test_shipment(order):
+    assert order.total_price == 2550
 
 
 def test_db(db, mongo_client):

@@ -39,7 +39,7 @@ class Order:
         if items is None:
             items = []
         self.items = items
-        self.user_id = user.user_id
+        self.user = user
         self.status = "Pending"
         self.total_price = sum(it.price * it.quantity for it in items)
 
