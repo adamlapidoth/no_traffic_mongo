@@ -35,6 +35,6 @@ class TestMongoUser:
         assert ret.acknowledged
         assert not mongo_user.get()
 
-    def test_remove_all_users(self, db, clear_users):
+    def test_remove_all_users(self, db, _clear_users):
         mongo_user = MUser(db, User(name="Ilan", user_id="hhh"))
         mongo_user.add()

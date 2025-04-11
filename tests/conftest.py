@@ -38,21 +38,21 @@ def db(mongo_client):
 
 
 @pytest.fixture
-def clear_users(db):
+def _clear_users(db):
     yield
     users_col = db["users"]
     users_col.delete_many({})
 
 
 @pytest.fixture
-def clear_items(db):
+def _clear_items(db):
     yield
     users_col = db["items"]
     users_col.delete_many({})
 
 
 @pytest.fixture
-def clear_orders(db):
+def _clear_orders(db):
     yield
-    users_col = db["items"]
+    users_col = db["orders"]
     users_col.delete_many({})
