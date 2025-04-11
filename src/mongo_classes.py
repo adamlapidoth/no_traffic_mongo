@@ -69,9 +69,16 @@ class MOrder(MObj):
     def __init__(self, db, order: Order):
         super().__init__(db, "orders", order)
 
-    def from_mongo_to_obj(self) -> Order:
-        order_dict = self.get()
-        order_dict.pop("create_date_utc")
-        order_dict.pop("_id")
-        order_dict.pop("update_date_utc", None)
-        return Order(**order_dict)
+    def add(self):
+        order_dict = copy.deepcopy(vars(self.obj))
+        user = order_dict.pop("user")
+        order_dict["user"] = copy.deepcopy(vars(user))
+        items_list = order_dict.pop("items")
+        order_dict["items"] = [copy.deepcopy(vars(it)) for it in items_list]
+        order_dict["create_date_utc"] = datetime.now(timezone.utc)
+        ret = self.mongo_collection.col.insert_one(order_dict)
+        return ret
+
+    def get(self):
+        ret = self.mongo_collection.col.find_one({"user.name": self.obj.user.name})
+        return ret
